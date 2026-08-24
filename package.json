@@ -1,0 +1,15 @@
+{
+  "name": "csc-3100-app",
+  "version": "1.0.0",
+  "description": "First individual assignment for Prasi Aravind in CSC 3100",
+  "license": "ISC",
+  "author": "Prasi Aravind",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
+}
