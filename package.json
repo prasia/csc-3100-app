@@ -9,7 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npm run -w react-frontend dev",
-    "start": "npm run build -w react-frontend && npm run preview -w react-frontend"
+    "start": "npm run -w react-frontend build && npm run -w react-frontend preview"
   },
   "workspaces": [
     "packages/*"
