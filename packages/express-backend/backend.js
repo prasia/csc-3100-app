@@ -53,6 +53,12 @@ const addUser = (user) => {
   return user;
 };
 
+const deleteUserById = (id) => {
+  const initialLength = users["users_list"].length;
+  users["users_list"] = users["users_list"].filter((user) => user.id !== id);
+  return initialLength !== users["users_list"].length;
+};
+
 app.get("/users", (req, res) => {
   const name = req.query.name;
   if (name != undefined) {
@@ -64,9 +70,13 @@ app.get("/users", (req, res) => {
   }
 });
 
+app.get("/", (req, res) => {
+    res.send("Hello World!");
+});
+
 app.get("/users/:id", (req, res) => {
-  const id = req.params["id"]; //or req.params.id
-  let result = findUserById(id);
+  const delId = req.params["id"]; //or req.params.id
+  let result = findUserById(delId);
   if (result === undefined) {
     res.status(404).send("Resource not found.");
   } else {
@@ -78,6 +88,16 @@ app.post("/users", (req, res) => {
   const userToAdd = req.body;
   addUser(userToAdd);
   res.send();
+});
+
+app.delete("/users/:id", (req, res) => {
+  const delId = req.params.id;
+  const deleted = deleteUserById(delId);
+  if (deleted) {
+      res.status(204).send();
+  } else {
+      res.status(404).send("User not found.");
+    }
 });
 
 app.listen(port, () => {
