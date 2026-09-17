@@ -7,10 +7,27 @@ function MyApp() {
 const [characters, setCharacters] = useState([]);
 
   function removeOneCharacter(index) {
-    const updated = characters.filter((character, i) => {
-      return i !== index;
+    // const updated = characters.filter((character, i) => {
+    //   return i !== index;
+    // });
+    // setCharacters(updated);
+    const userToDelete = characters[index];
+
+    fetch(`http://localhost:8000/users/${userToDelete.id}`, {
+      method: "DELETE",
+    }).then((response) => {
+      if (response.status === 204) {
+        setCharacters((currentCharacters) => currentCharacters.filter((character) => character.id !== userToDelete.id)
+      );
+      } else if (response.status === 404) {
+        console.log("User not found.");
+      } else {
+        throw new Error(`Delete failed with status ${response.status}`);
+      }
+    })
+    .catch((error) => {
+      console.log(error);
     });
-    setCharacters(updated);
   }
 
   function fetchUsers() {
@@ -21,11 +38,18 @@ const [characters, setCharacters] = useState([]);
   function updateList(person) {
     postUser(person)
       .then((response) => {
-        if (response.status === 201) {
-        setCharacters([...characters, person])
+        if (response.status !== 201) {
+          return null;
         }
-        else {
-          console.log("Person not added successfully");
+
+        return response.json();
+      })
+      .then((createdUser) => {
+        if (createdUser !== null) {
+          setCharacters((currentCharacters) => [
+            ...currentCharacters,
+            createdUser,
+          ]);
         }
       })
       .catch((error) => {
