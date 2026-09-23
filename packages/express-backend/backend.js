@@ -12,7 +12,7 @@ import {
   findUserById,
   addUser,
   deleteUserById,
-} from "./user-services.js";
+} from "./services/user-service.js";
 
 const app = express();
 const port = 8000;
